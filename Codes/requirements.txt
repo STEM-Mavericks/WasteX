@@ -39,3 +39,4 @@ wadllib==1.3.6
 Werkzeug==3.0.3
 zipp==3.19.1
 gunicorn==23.0.0
+Pygments>=2.15.0
