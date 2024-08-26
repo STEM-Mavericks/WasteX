@@ -69,9 +69,9 @@ We welcome contributions to the Automated Waste Segregation System. Please follo
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the Apache License - see the [LICENSE](LICENSE) file for details.
 
 ## Contact
 
-For more information or questions, please contact us at [your-email@example.com].
+For more information or questions, please contact us at [STEM Mavericks](mailto:stemavericks.team@hotmail.com).
 
