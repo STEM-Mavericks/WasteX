@@ -3,11 +3,8 @@ click==8.1.7
 cryptography==3.4.8
 cs50==9.3.4
 dbus-python==1.2.18
-distro==1.7.0
-distro-info==1.1+ubuntu0.1
 Flask==3.0.3
 greenlet==3.0.3
-gyp==0.1
 httplib2==0.20.2
 importlib-metadata==4.6.4
 itsdangerous==2.2.0
