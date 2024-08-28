@@ -1,22 +1,20 @@
 import sqlite3
 
-def create_database():
-    """Create the database and the users table if it does not exist."""
-    conn = sqlite3.connect('data.db')
-    cursor = conn.cursor()
+DATABASE = 'data.db'
 
-    # Create the users table with the correct schema
-    cursor.execute('''
+def create_database():
+    conn = sqlite3.connect(DATABASE)
+    c = conn.cursor()
+    c.execute('''
         CREATE TABLE IF NOT EXISTS users (
-            username TEXT PRIMARY KEY,
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            username TEXT NOT NULL UNIQUE,
             password_hash TEXT NOT NULL
         )
     ''')
-
     conn.commit()
     conn.close()
 
-    print('Database data.db is established successfully!')
-
-if __name__ == "__main__":
+if __name__ == '__main__':
     create_database()
+    print("Database and table created successfully.")
