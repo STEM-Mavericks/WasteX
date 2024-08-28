@@ -1,22 +1,42 @@
+from flask import Flask
+from flask_bcrypt import Bcrypt
+from flask_login import LoginManager, UserMixin
 import sqlite3
 
-def create_database():
-    """Create the database and the users table if it does not exist."""
-    conn = sqlite3.connect('data.db')
-    cursor = conn.cursor()
+DATABASE = 'data.db'
 
-    # Create the users table with the correct schema
-    cursor.execute('''
-        CREATE TABLE IF NOT EXISTS users (
-            username TEXT PRIMARY KEY,
-            password_hash TEXT NOT NULL
-        )
-    ''')
+bcrypt = Bcrypt()
+login_manager = LoginManager()
+login_manager.login_view = 'login'
 
-    conn.commit()
+class User(UserMixin):
+    def __init__(self, username, password_hash):
+        self.id = username
+        self.username = username
+        self.password_hash = password_hash
+
+    def check_password(self, password):
+        return bcrypt.check_password_hash(self.password_hash, password)
+
+def load_user(username):
+    conn = sqlite3.connect(DATABASE)
+    c = conn.cursor()
+    c.execute("SELECT username, password_hash FROM users WHERE username=?", (username,))
+    user = c.fetchone()
     conn.close()
+    if user:
+        return User(user[0], user[1])
+    return None
 
-    print('Database data.db is established successfully!')
+@login_manager.user_loader
+def user_loader(username):
+    return load_user(username)
 
-if __name__ == "__main__":
-    create_database()
+def create_app():
+    app = Flask(__name__)
+    app.secret_key = 'Your_secret_key'  # Replace with your own secret key
+
+    bcrypt.init_app(app)
+    login_manager.init_app(app)
+
+    return app

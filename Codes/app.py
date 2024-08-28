@@ -1,37 +1,11 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_bcrypt import Bcrypt
-from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
+from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user
 import sqlite3
 import re
+from yourapplication import create_app, load_user, User, DATABASE  # Import from __init__.py
 
-app = Flask(__name__)
-app.secret_key = 'Your_secret_key'  # Replace with your own secret key
-
-bcrypt = Bcrypt(app)
-login_manager = LoginManager(app)
-login_manager.login_view = 'login'
-
-DATABASE = 'data.db'
-
-class User(UserMixin):
-    def __init__(self, username, password_hash):
-        self.id = username  # UserMixin requires an id attribute; this is correctly added here.
-        self.username = username
-        self.password_hash = password_hash
-
-    def check_password(self, password):
-        return bcrypt.check_password_hash(self.password_hash, password)
-
-@login_manager.user_loader
-def load_user(username):
-    conn = sqlite3.connect(DATABASE)
-    c = conn.cursor()
-    c.execute("SELECT username, password_hash FROM users WHERE username=?", (username,))
-    user = c.fetchone()
-    conn.close()
-    if user:
-        return User(user[0], user[1])
-    return None
+app = create_app()
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
