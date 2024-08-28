@@ -90,7 +90,7 @@ def login():
         if user and user.check_password(password):
             login_user(user)
             flash('Logged in successfully.', 'success')
-            return redirect(url_for('index'))
+            return redirect(url_for('main'))
         else:
             flash('Invalid Password or Username.', 'danger')
         return render_template('login.html')
@@ -106,3 +106,7 @@ def logout():
 @app.route('/', methods=['GET', 'POST'])
 def index():
     return render_template('main.html')
+
+@app.route('/index', methods=['GET', 'POST'])
+def main():
+    return render_template('index.html')
