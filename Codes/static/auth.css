@@ -1,6 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap');
 /* General Styles */
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: "Permanent Marker", cursive;
     background-color: #f0f0f0;
     display: flex;
     justify-content: center;
