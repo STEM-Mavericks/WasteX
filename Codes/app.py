@@ -44,13 +44,13 @@ def register():
         if password != confirm_password:
             flash('Passwords do not match', 'error')
             return redirect(url_for('register'))
-        
-        # Add logic for checking if username already exists and saving user
+
+        # Check if the username already exists
         conn = sqlite3.connect(DATABASE)
         c = conn.cursor()
         c.execute("SELECT username FROM users WHERE username=?", (username,))
         if not c.fetchone():
-            hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
+            hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
             c.execute("INSERT INTO users (username, password_hash) VALUES (?, ?)", (username, hashed_password))
             conn.commit()
             conn.close()
