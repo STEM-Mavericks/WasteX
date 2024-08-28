@@ -102,6 +102,3 @@ def logout():
 @app.route('/', methods=['GET', 'POST'])
 def index():
     return render_template('main.html')
-
-if __name__ == '__main__':
-    app.run(debug=True)  # Set debug=True for development
