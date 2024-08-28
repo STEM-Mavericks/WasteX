@@ -1,7 +1,7 @@
-Flask==2.0.3
+Flask==2.2.5
 Flask-Bcrypt==1.0.0
 Flask-Login==0.6.2
-gunicorn==20.1.0
-torch==1.13.0 # Replace with the correct version based on your environment
+gunicorn==22.0.0
+torch==2.2.0 # Replace with the correct version based on your environment
 python==3.12.1
 pip==24.2
