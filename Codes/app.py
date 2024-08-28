@@ -21,10 +21,9 @@ from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 import sqlite3
-import re
 
 app = Flask(__name__)
-app.secret_key = 'Your_secret_key'  # Replace with your own secret key
+app.secret_key = 'Your_secret_key'  # Replace with your own secret key for production use
 
 bcrypt = Bcrypt(app)
 login_manager = LoginManager(app)
@@ -72,12 +71,11 @@ def register():
             hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
             c.execute("INSERT INTO users (username, password_hash) VALUES (?, ?)", (username, hashed_password))
             conn.commit()
-            conn.close()
             flash('Registration successful!', 'success')
-            return redirect(url_for('login'))
         else:
             flash('Username already exists!', 'error')
-            conn.close()
+        conn.close()
+        return redirect(url_for('login'))
 
     return render_template('register.html')
 
@@ -90,10 +88,9 @@ def login():
         if user and user.check_password(password):
             login_user(user)
             flash('Logged in successfully.', 'success')
-            return redirect(url_for('main'))
+            return redirect(url_for('index'))
         else:
             flash('Invalid Password or Username.', 'danger')
-        return render_template('login.html')
     return render_template('login.html')
 
 @app.route('/logout')
@@ -107,6 +104,5 @@ def logout():
 def index():
     return render_template('main.html')
 
-@app.route('/index', methods=['GET', 'POST'])
-def main():
-    return render_template('index.html')
+if __name__ == '__main__':
+    app.run(debug=True)  # Set debug=True for development
