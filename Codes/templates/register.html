@@ -1,33 +1,43 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/auth.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h2>Register</h2>
 
-{% block title %}Register{% endblock %}
-
-{% block content %}
-<div class="row justify-content-center">
-    <div class="col-md-6">
-        <h2 class="text-center">Register</h2>
-        <form method="POST" action="{{ url_for('register') }}">
-            <div class="mb-3">
-                <label for="username" class="form-label">Username</label>
-                <input type="text" class="form-control" id="username" name="username" required>
-            </div>
-            <div class="mb-3">
-                <label for="password" class="form-label">Password</label>
-                <input type="password" class="form-control" id="password" name="password" required>
-                <div id="passwordHelpBlock" class="form-text">
-                    <p id="length" class="text-muted">• At least 8 characters</p>
-                    <p id="uppercase" class="text-muted">• At least one uppercase letter</p>
-                    <p id="lowercase" class="text-muted">• At least one lowercase letter</p>
-                    <p id="number" class="text-muted">• At least one number</p>
-                    <p id="special" class="text-muted">• At least one special character</p>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {% for category, message in messages %}
+                        <div class="flash {{ category }}">{{ message }}</div>
+                    {% endfor %}
                 </div>
+            {% endif %}
+        {% endwith %}
+
+        <form method="POST" action="{{ url_for('register') }}">
+            <div>
+                <label for="username">Username:</label>
+                <input type="text" name="username" id="username" required>
             </div>
-            <div class="mb-3">
-                <label for="confirm_password" class="form-label">Confirm Password</label>
-                <input type="password" class="form-control" id="confirm_password" name="confirm_password" required>
+            <div>
+                <label for="password">Password:</label>
+                <input type="password" name="password" id="password" required>
             </div>
-            <button type="submit" class="btn btn-primary w-100">Register</button>
+            <div>
+                <label for="confirm_password">Confirm Password:</label>
+                <input type="password" name="confirm_password" id="confirm_password" required>
+            </div>
+            <div>
+                <button type="submit">Register</button>
+            </div>
         </form>
+        <p>Already have an account? <a href="{{ url_for('login') }}">Log in here</a>.</p>
     </div>
 </div>
 <p>Developed by stem mavericks</p>

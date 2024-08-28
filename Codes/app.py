@@ -36,53 +36,30 @@ def load_user(username):
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
-        username = request.form.get('username')
-        password = request.form.get('password')
-        confirm_password = request.form.get('confirm_password')
+        username = request.form['username']
+        password = request.form['password']
+        confirm_password = request.form['confirm_password']
 
-        # Check if passwords match
+        # Basic validation example
         if password != confirm_password:
-            flash('Passwords do not match.', 'danger')
-            return render_template('register.html')
+            flash('Passwords do not match', 'error')
+            return redirect(url_for('register'))
 
-        # Check password complexity
-        if len(password) < 8:
-            flash('Password must be at least 8 characters long.', 'danger')
-            return render_template('register.html')
-
-        if not re.search(r'[A-Z]', password):
-            flash('Password must contain at least one uppercase letter.', 'danger')
-            return render_template('register.html')
-
-        if not re.search(r'[a-z]', password):
-            flash('Password must contain at least one lowercase letter.', 'danger')
-            return render_template('register.html')
-
-        if not re.search(r'[0-9]', password):
-            flash('Password must contain at least one digit.', 'danger')
-            return render_template('register.html')
-
-        if not re.search(r'[!@#$%^&*(),.?":{}|<>]', password):
-            flash('Password must contain at least one special character.', 'danger')
-            return render_template('register.html')
-
-        if username and password:
-            conn = sqlite3.connect(DATABASE)
-            c = conn.cursor()
-            c.execute("SELECT username FROM users WHERE username=?", (username,))
-            if not c.fetchone():
-                hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
-                c.execute("INSERT INTO users (username, password_hash) VALUES (?, ?)", (username, hashed_password))
-                conn.commit()
-                conn.close()
-                flash('Registration Successful! You can log in.', 'success')
-                return redirect(url_for('login'))
-            else:
-                flash('Username already exists!', 'danger')
-                conn.close()
+        # Check if the username already exists
+        conn = sqlite3.connect(DATABASE)
+        c = conn.cursor()
+        c.execute("SELECT username FROM users WHERE username=?", (username,))
+        if not c.fetchone():
+            hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
+            c.execute("INSERT INTO users (username, password_hash) VALUES (?, ?)", (username, hashed_password))
+            conn.commit()
+            conn.close()
+            flash('Registration successful!', 'success')
+            return redirect(url_for('login'))
         else:
-            flash('Fill out both the details.', 'danger')
-        return render_template('register.html')
+            flash('Username already exists!', 'error')
+            conn.close()
+
     return render_template('register.html')
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -108,5 +85,9 @@ def logout():
     return redirect(url_for('login'))
 
 @app.route('/', methods=['GET', 'POST'])
+@login_required
 def index():
     return render_template('main.html')
+
+if __name__ == '__main__':
+    app.run(debug=True)
