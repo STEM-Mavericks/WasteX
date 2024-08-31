@@ -2,5 +2,35 @@
 {% block content %}
 <p>Data Pages</p>
 <p>Displaying data here.....</p>
+<canvas id="wasteChart"></canvas>
 
+<script>
+    var ctx = document.getElementById('wasteChart').getContext('2d');
+    var wasteChart = new Chart(ctx, {
+        type: 'bar', // or 'line', 'pie', etc.
+        data: {
+            labels: ['Dry Waste', 'Wet Waste'], // Update this with dynamic data if needed
+            datasets: [{
+                label: 'Waste Weight (kg)',
+                data: [12, 19], // Replace with actual data
+                backgroundColor: [
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                ],
+                borderColor: [
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(75, 192, 192, 1)',
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>
 {% endblock %}
