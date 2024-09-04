@@ -3,19 +3,15 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager, UserMixin, login_user, current_user, logout_user, login_required
 
-# Initialize the Flask app
 app = Flask(__name__)
 
-# Configurations
 app.config['SECRET_KEY'] = 'your_secret_key'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
 
-# Initialize extensions
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
 login_manager = LoginManager(app)
 
-# Flask-Login configurations
 login_manager.login_view = 'login'
 login_manager.login_message_category = 'info'
 
@@ -30,7 +26,6 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(60), nullable=False)
 
-# Routes
 @app.route('/')
 @app.route('/index')
 def index():
@@ -87,10 +82,8 @@ def logout():
     logout_user()
     return redirect(url_for('index'))
 
-# Create the database
 with app.app_context():
     db.create_all()
 
-# Run the application
 if __name__ == '__main__':
     app.run(debug=True)
