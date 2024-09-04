@@ -1,9 +1,6 @@
-// <uniquifier>: Use a unique and descriptive class name
-// <weight>: Use a value from 100 to 400
-
-.playwrite-cu-<uniquifier> {
+.playwrite-cu-latin {
   font-family: "Playwrite CU", cursive;
   font-optical-sizing: auto;
-  font-weight: <weight>;
+  font-weight: 800;
   font-style: normal;
 }

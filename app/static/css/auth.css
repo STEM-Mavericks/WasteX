@@ -1,10 +1,12 @@
+/* Import Google Fonts */
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap");
 
+/* Apply global styles */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "Poppins", sans-serif;
+  font-family: "Poppins", sans-serif; /* Fallback font added */
 }
 
 body {
@@ -12,17 +14,15 @@ body {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background: url("./img.jpg") no-repeat;
-  background-size: cover;
-  background-position: center;
+  margin: 0;
 }
 
 .wrapper {
   width: 420px;
   background: transparent;
-  border: 2px solid rgba(255, 255, 255, .2);
+  border: 2px solid rgba(255, 255, 255, 0.2);
   backdrop-filter: blur(20px);
-  box-shadow: 0 0 10px rgba(0, 0, 0, .2);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   color: #fff;
   border-radius: 10px;
   padding: 30px 40px;
@@ -33,7 +33,7 @@ body {
   text-align: center;
 }
 
-.wrapper .input-box {
+.input-box {
   position: relative;
   width: 100%;
   height: 50px;
@@ -44,13 +44,12 @@ body {
   width: 100%;
   height: 100%;
   background: transparent;
-  border: none;
-  outline: none;
-  border: 2px solid rgba(255, 255, 255, .2);
+  border: 2px solid rgba(255, 255, 255, 0.2);
   border-radius: 40px;
   font-size: 16px;
   color: #fff;
   padding: 20px 45px 20px 20px;
+  outline: none;
 }
 
 .input-box input::placeholder {
@@ -70,7 +69,7 @@ body {
   cursor: pointer;
 }
 
-.wrapper .remember-forgot {
+.remember-forgot {
   display: flex;
   justify-content: space-between;
   font-size: 14.5px;
@@ -91,28 +90,28 @@ body {
   text-decoration: underline;
 }
 
-.wrapper .btn {
+.btn {
   width: 100%;
   height: 45px;
   background: #fff;
   border: none;
-  outline: none;
   border-radius: 40px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, .1);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   cursor: pointer;
   font-size: 16px;
   color: #333;
   font-weight: 600;
+  outline: none;
 }
 
-.wrapper .register-link {
+.register-link {
   font-size: 14.5px;
   text-align: center;
   margin: 20px 0 15px;
 }
 
 .register-link p a {
-  color:#fff;
+  color: #fff;
   text-decoration: none;
   font-weight: 600;
 }
