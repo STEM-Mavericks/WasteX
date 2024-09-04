@@ -1,8 +1,6 @@
-@import url('https://fonts.googleapis.com/css2?family=Playwrite+CU:wght@100..400&display=swap');
-
-.playwrite-cu- {
+.playwrite-cu-latin {
     font-family: "Playwrite CU", cursive;
     font-optical-sizing: auto;
-    font-weight: <weight>;
+    font-weight: 400;
     font-style: normal;
   }
