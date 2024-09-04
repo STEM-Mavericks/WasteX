@@ -1,8 +1,0 @@
-Flask
-Flask-SQLAlchemy
-Flask-WTF
-Flask-Login
-gunicorn
-Flask-DebugToolbar
-Flask-Admin
-Flask-Script
