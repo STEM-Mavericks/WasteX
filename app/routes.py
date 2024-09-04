@@ -1,23 +1,26 @@
-from flask import Blueprint, request, jsonify, render_template
-from .models import db, WasteData, User
+from flask import render_template, redirect, url_for, flash
+from . import app
+from .models import db, User
+from flask import request
 
-bp = Blueprint('routes', __name__)
-
-@bp.route('/api/data', methods=['POST'])
-def receive_data():
-    data = request.get_json()
-    print(f"Received data: {data}")
-    
-    waste_data = WasteData(data=data['data'])
-    db.session.add(waste_data)
-    db.session.commit()
-
-    return jsonify({"message": "Data received successfully"}), 200
-
-@bp.route('/')
+@app.route('/')
 def index():
     return render_template('index.html')
 
-@bp.route('/analytics')
+@app.route('/login', methods=['GET','POST'])
+def login():
+
+        return render_template('login.html')
+
+@app.route('/register', methods=['GET','POST'])
+def register():
+    
+        return render_template('register.html')
+
+@app.route('/analytics')
 def analytics():
-    return render_template('analytics.html')
+     return render_template('analytics.html')
+
+@app.route('/error')
+def error():
+     return render_template('error.html')

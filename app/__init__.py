@@ -1,10 +1,15 @@
 from flask import Flask
+from .models import db
 
 def create_app():
-    app = Flask(__name__)
-    app.config.from_pyfile('config.py')
+ app = Flask(__name__)
+ app.config.from_object('config.Config')
 
-    from . import routes
-    app.register_blueprint(routes.bp)
+ db.init_app(app)
 
-    return app
+ with app.app_context():
+  from . import routes
+
+  db.create_all()
+
+  return app
