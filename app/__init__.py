@@ -1,15 +1,21 @@
 from flask import Flask
-from .models import db
+from flask_sqlalchemy import SQLAlchemy
+from flask_bcrypt import Bcrypt
+
+db = SQLAlchemy()
+bcrypt = Bcrypt()
 
 def create_app():
- app = Flask(__name__)
- app.config.from_object('config.Config')
+    app = Flask(__name__)
+    app.config['SECRET_KEY'] = 'your_secret_key'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
+    
+    db.init_app(app)
+    bcrypt.init_app(app)
 
- db.init_app(app)
+    with app.app_context():
+        db.create_all()
 
- with app.app_context():
-  from . import routes
+    from app import routes
 
-  db.create_all()
-
-  return app
+    return app

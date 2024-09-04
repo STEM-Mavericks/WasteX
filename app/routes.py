@@ -1,26 +1,34 @@
-from flask import render_template, redirect, url_for, flash
-from . import app
-from .models import db, User
-from flask import request
+from flask import render_template, url_for, flash, redirect, request
+from app import app, db, bcrypt
+from app.models import User
 
 @app.route('/')
+@app.route('/index')
 def index():
     return render_template('index.html')
 
-@app.route('/login', methods=['GET','POST'])
+@app.route('/login', methods=['GET', 'POST'])
 def login():
+    if request.method == 'POST':
+        
+        return redirect(url_for('index'))
+    return render_template('login.html')
 
-        return render_template('login.html')
-
-@app.route('/register', methods=['GET','POST'])
+@app.route('/register', methods=['GET', 'POST'])
 def register():
-    
-        return render_template('register.html')
+    if request.method == 'POST':
+        
+        return redirect(url_for('login'))
+    return render_template('register.html')
 
 @app.route('/analytics')
 def analytics():
-     return render_template('analytics.html')
+    return render_template('analytics.html')
+
+@app.route('/settings')
+def settings():
+    return render_template('settings.html')
 
 @app.route('/error')
 def error():
-     return render_template('error.html')
+    return render_template('error.html')
