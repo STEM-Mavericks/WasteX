@@ -146,8 +146,8 @@ body {
   padding: 2rem;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
-  width: 100%;
-  max-width: 400px;
+  width: 150%;
+  max-width: 500px;
 }
 
 h1 {
