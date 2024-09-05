@@ -1,50 +1,25 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/auth.css') }}">
-    <title>Register</title>
-</head>
-<body>
-    <nav>
-        <a href="{{ url_for('index') }}">Home</a>
-        <a href="{{ url_for('login') }}">Login</a>
-        <a href="{{ url_for('register') }}">Register</a>
-        <a href="{{ url_for('settings') }}">Settings</a>
-        <a href="{{ url_for('analytics') }}">Analytics</a>
-    </nav>
-    <main>
-        <div class="wrapper">
-            <form action="/register" method="post">
-                <h1>Register</h1>
-                <div class="input-box">
-                    <input type="text" id="username" name="username" placeholder="Username" required>
-                    <i class="bx bxs-user"></i>
-                </div>
-                <div class="input-box">
-                    <input type="email" id="email" name="email" placeholder="Email" required>
-                    <i class="bx bxs-envelope"></i>
-                </div>
-                <div class="input-box">
-                    <input type="password" id="password" name="password" placeholder="Password" required>
-                    <i class="bx bxs-lock"></i>
-                </div>
-                <div class="input-box">
-                    <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirm Password" required>
-                    <i class="bx bxs-lock"></i>
-                </div>
-                <button type="submit" class="btn">Register</button>
-                <div class="register-link">
-                    <p>Already have an account? <a href="{{ url_for('login') }}">Login</a></p>
-                </div>
-            </form>
-        </div>
-    </main>
-    <footer>
-        <p>&copy; 2024 STEM Mavericks</p>
-    </footer>
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% block title %}Register{% endblock %}
+
+{% block content %}
+    <div class="wrapper">
+        <form action="{{ url_for('register') }}" method="post">
+            <h1>Register</h1>
+            <div class="input-box">
+                <input type="text" id="username" name="username" placeholder="Username" required>
+                <i class="bx bxs-user"></i>
+            </div>
+            <div class="input-box">
+                <input type="email" id="email" name="email" placeholder="Email" required>
+                <i class="bx bxs-envelope"></i>
+            </div>
+            <div class="input-box">
+                <input type="password" id="password" name="password" placeholder="Password" required>
+                <i class="bx bxs-lock"></i>
+                <i class="bx bxs-lock" onclick="togglePasswordVisibility()"></i>
+            </div>
+            <button type="submit" class="btn">Register</button>
+        </form>
+    </div>
+{% endblock %}
