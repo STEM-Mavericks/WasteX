@@ -11,7 +11,7 @@
 <body>
     <header>
         <h2>Welcome, {{ current_user.username if current_user.is_authenticated else 'User' }}!</h2>
-        <a href="{{ url_for('index') }}" class="logo">Automated Waste Segregation System</a>
+        <a href="{{ url_for('index') }}" class="logo">Automated <span>Waste Segregation</span> System</a>
         <nav class="navbar">
             <a href="{{ url_for('index') }}" style="--i:1">Home</a>
             <a href="#details" style="--i:2">Project Details</a>

@@ -7,6 +7,7 @@ from wtforms import BooleanField, StringField, PasswordField, SubmitField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 import os
 from datetime import datetime
+from email_validator import validate_email, EmailNotValidError
 
 app = Flask(__name__)
 
@@ -77,12 +78,16 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
-        if user and bcrypt.check_password_hash(user.password, form.password.data):
-            login_user(user, remember=form.remember.data)
-            flash('Login successful', 'success')
-            return redirect(url_for('index'))
+        if user:
+            print(f"User found: {user.username}")
+            if bcrypt.check_password_hash(user.password, form.password.data):
+                login_user(user, remember=form.remember.data)
+                flash('Login successful', 'success')
+                return redirect(url_for('index'))
+            else:
+                flash('Login unsuccessful. Please check username and password', 'danger')
         else:
-            flash('Login unsuccessful. Please check username and password', 'danger')
+            flash('User not found', 'danger')
     return render_template('login.html', form=form)
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -97,6 +102,8 @@ def register():
         db.session.commit()
         flash('Your account has been created! You are now able to log in', 'success')
         return redirect(url_for('login'))
+    else:
+        print(form.errors)
     return render_template('register.html', form=form)
 
 @app.route('/analytics')

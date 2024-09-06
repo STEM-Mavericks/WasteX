@@ -25,9 +25,31 @@
         <h2>Contact <span>Us</span></h2>
         <h4>We'd love to hear from you!</h4>
         <p>For more information about our project, feel free to reach out. Your feedback and inquiries are valuable to us.</p>
-        <ul class="contact-info">
-            <li><i class="bx bx-envelope"></i> <a href="mailto:stemavericks.team@hotmail.com">stemavericks.team@hotmail.com</a></li>
-        </ul>
+        <form action="https://api.web3forms.com/submit" method="POST" id="form">
+            <input type="hidden" name="access_key" value="be3470c2-d003-422a-9450-f85e26aebba7" />
+            <input type="hidden" name="subject" value="Contact Us" />
+            <input type="checkbox" name="botcheck" style="display: none;" />
+
+            <div class="form-group">
+                <label for="name" class="form-label">Full Name</label>
+                <input type="text" name="name" id="name" placeholder="John Doe" required class="form-control" />
+            </div>
+            <div class="form-group">
+                <label for="email" class="form-label">Email Address</label>
+                <input type="email" name="email" id="email" placeholder="you@company.com" required class="form-control" />
+            </div>
+            <div class="form-group">
+                <label for="message" class="form-label">Your Message</label>
+                <textarea rows="5" name="message" id="message" placeholder="Your Message" class="form-control" required></textarea>
+            </div>
+            <button type="submit" class="btn">Send Message</button>
+        </form>
     </div>
 </section>
+
+<footer class="footer">
+    <div class="container">
+        <p>&copy; 2024 STEM Mavericks. All rights reserved.</p>
+    </div>
+</footer>
 {% endblock %}

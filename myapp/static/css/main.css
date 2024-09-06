@@ -14,10 +14,13 @@ header {
 }
 
 header .logo {
-    position: top;
     font-size: 1.5rem;
     color: #fff;
     text-decoration: none;
+}
+
+header .logo span {
+    color: #07afe2;
 }
 
 .navbar a {
@@ -28,7 +31,7 @@ header .logo {
 
 .navbar a:hover {
     color: rgba(249, 244, 244, 0.784); 
-}    
+}
 
 footer {
     background: #333;
@@ -43,39 +46,110 @@ footer {
     padding: 20px;
 }
 
+.home-section, .details-section, .contact-section {
+    margin-bottom: 40px;
+}
+
+h1, h2, h3, h4 {
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    font-size: 2rem;
+}
+
+h2 {
+    font-size: 1.5rem;
+}
+
+h3 {
+    font-size: 1.25rem;
+}
+
+h4 {
+    font-size: 1rem;
+}
+
 form {
     background: #f4f4f4;
     padding: 20px;
     border-radius: 5px;
 }
 
-form .form-group {
+.form-group {
     margin-bottom: 15px;
 }
 
-form .form-label {
+.form-label {
     display: block;
     margin-bottom: 5px;
 }
 
-form .form-control {
+.form-control {
     width: 100%;
     padding: 10px;
     border: 1px solid #ddd;
     border-radius: 5px;
 }
 
-form .btn {
+.btn {
     background: #333;
     color: #fff;
     padding: 10px 15px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    text-align: center;
 }
 
-form .btn:hover {
+.btn:hover {
     background: #555;
 }
 
-/* Add more styles as needed */
+.contact-info {
+    text-decoration: none;
+}
+
+.form-footer .message {
+    color: #d9534f; 
+  }
+  
+  .form-footer .success {
+    color: #5bc0de; 
+  }
+  
+  .flash-messages {
+    margin-bottom: 20px;
+  }
+  
+  .alert {
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    font-size: 1rem;
+  }
+  
+  .alert-success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+  }
+  
+  .alert-danger {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+  }
+  
+  .alert-info {
+    background-color: #d1ecf1;
+    color: #0c5460;
+    border: 1px solid #bee5eb;
+  }
+  
+  .alert-warning {
+    background-color: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeeba;
+  }
