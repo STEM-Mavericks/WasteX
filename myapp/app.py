@@ -6,6 +6,7 @@ from flask_wtf import FlaskForm
 from wtforms import BooleanField, StringField, PasswordField, SubmitField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 import os
+from werkzeug.urls import url_parse, url_unparse
 from datetime import datetime
 from email_validator import validate_email, EmailNotValidError
 
