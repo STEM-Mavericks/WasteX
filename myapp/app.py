@@ -11,7 +11,6 @@ from email_validator import validate_email, EmailNotValidError
 
 app = Flask(__name__)
 
-# Configuration settings
 class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'your_secret_key'
     SQLALCHEMY_DATABASE_URI = 'sqlite:///site.db'
@@ -29,7 +28,6 @@ login_manager.login_message_category = 'info'
 def load_user(user_id):
     return User.query.get(int(user_id))
 
-# Database model
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(20), unique=True, nullable=False)
@@ -41,7 +39,6 @@ class User(db.Model, UserMixin):
     def __repr__(self):
         return f"User('{self.username}', '{self.email}', '{self.created_at}')"
 
-# Forms
 class RegistrationForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired(), Length(min=2, max=20)])
     email = StringField('Email', validators=[DataRequired(), Email()])
@@ -65,7 +62,6 @@ class LoginForm(FlaskForm):
     remember = BooleanField('Remember Me')
     submit = SubmitField('Login')
 
-# Routes
 @app.route('/')
 @app.route('/index')
 def index():
@@ -125,7 +121,6 @@ def logout():
     logout_user()
     return redirect(url_for('index'))
 
-# Error handling
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('404.html'), 404
@@ -134,7 +129,6 @@ def page_not_found(e):
 def internal_server_error(e):
     return render_template('500.html'), 500
 
-# Initialize database
 with app.app_context():
     db.create_all()
 
