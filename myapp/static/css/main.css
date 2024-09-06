@@ -157,3 +157,86 @@ form {
     color: #856404;
     border: 1px solid #ffeeba;
   }
+
+  /* General Settings Page Styles */
+.settings {
+    padding: 60px 20px;
+}
+
+.settings-container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+fieldset {
+    border: none;
+    margin-bottom: 20px;
+    padding: 20px;
+    background: #f9f9f9;
+    border-radius: 8px;
+}
+
+legend {
+    font-size: 24px;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+input[type="text"], input[type="email"], input[type="password"], select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+button.btn {
+    background-color: #4CAF50;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button.btn-danger {
+    background-color: #f44336;
+}
+
+button.btn:hover {
+    background-color: #45a049;
+}
+
+button.btn-danger:hover {
+    background-color: #e53935;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .settings-container {
+        padding: 20px;
+    }
+
+    fieldset {
+        padding: 10px;
+    }
+
+    input[type="text"], input[type="email"], input[type="password"], select {
+        padding: 8px;
+    }
+
+    button.btn, button.btn-danger {
+        width: 100%;
+        padding: 12px;
+    }
+}
