@@ -10,7 +10,7 @@
 </head>
 <body>
     <header>
-        <h2>Welcome, {{ current_user.username if current_user.is_authenticated else 'User' }}!</h2>
+        <h2 class="user">Welcome, <span>{{ current_user.username if current_user.is_authenticated else 'User' }}!</span></h2>
         <a href="{{ url_for('index') }}" class="logo">Automated <span>Waste Segregation</span> System</a>
         <nav class="navbar">
             <a href="{{ url_for('index') }}" style="--i:1">Home</a>
