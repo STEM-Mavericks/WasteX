@@ -3,7 +3,9 @@
 {% block title %}Analytics{% endblock %}
 
 {% block content %}
-    <h1>Analytics Page</h1>
+<div class="container">
+    <h2>Analytics</h2>
+    <p>Here you can view detailed analytics about the waste segregation system.</p>
     <canvas id="myChart" width="10" height="10"></canvas>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
@@ -29,4 +31,5 @@
             }
         });
     </script>
+</div>
 {% endblock %}

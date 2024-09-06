@@ -3,19 +3,25 @@
 {% block title %}Login{% endblock %}
 
 {% block content %}
-    <div class="wrapper">
-        <form action="{{ url_for('login') }}" method="post">
-            <h1>Login</h1>
-            <div class="input-box">
-                <input type="text" id="username" name="username" placeholder="Username" required>
-                <i class="bx bxs-user"></i>
-            </div>
-            <div class="input-box">
-                <input type="password" id="password" name="password" placeholder="Password" required>
-                <i class="bx bxs-lock"></i>
-                <i class="bx bxs-lock" onclick="togglePasswordVisibility()"></i>
-            </div>
-            <button type="submit" class="btn">Login</button>
-        </form>
-    </div>
+<div class="container">
+    <h2>Login</h2>
+    <form method="POST" action="{{ url_for('login') }}">
+        {{ form.hidden_tag() }}
+        <div class="form-group">
+            {{ form.username.label(class="form-label") }}
+            {{ form.username(class="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ form.password.label(class="form-label") }}
+            {{ form.password(class="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ form.remember() }} {{ form.remember.label(class="form-check-label") }}
+        </div>
+        <div class="form-group">
+            {{ form.submit(class="btn btn-primary") }}
+        </div>
+    </form>
+    <p>Don't have an account? <a href="{{ url_for('register') }}">Register here</a></p>
+</div>
 {% endblock %}

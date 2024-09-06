@@ -3,5 +3,9 @@
 {% block title %}Error{% endblock %}
 
 {% block content %}
-    <h1>Something went wrong!</h1>
+<div class="container">
+    <h2>Something went wrong</h2>
+    <p>Sorry, but the page you're looking for does not exist or an error has occurred.</p>
+    <a href="{{ url_for('index') }}">Return to Home</a>
+</div>
 {% endblock %}
