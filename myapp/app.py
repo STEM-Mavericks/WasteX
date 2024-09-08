@@ -6,19 +6,19 @@ from flask_wtf import FlaskForm
 from wtforms import BooleanField, StringField, PasswordField, SubmitField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 import os
-from urllib.parse import urlparse, urlunparse
 from datetime import datetime
-from email_validator import validate_email, EmailNotValidError
 
 app = Flask(__name__)
 
+# Configuration
 class Config:
-    SECRET_KEY = os.environ.get('SECRET_KEY') or 'your_secret_key'
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///site.db'
+    SECRET_KEY = os.environ.get('SECRET_KEY') or 'your_secret_key'  # Ensure this key is securely set
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///site.db'  # Check the database path
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 app.config.from_object(Config)
 
+# Initialize extensions
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
 login_manager = LoginManager(app)
@@ -29,6 +29,7 @@ login_manager.login_message_category = 'info'
 def load_user(user_id):
     return User.query.get(int(user_id))
 
+# User model
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(20), unique=True, nullable=False)
@@ -40,6 +41,7 @@ class User(db.Model, UserMixin):
     def __repr__(self):
         return f"User('{self.username}', '{self.email}', '{self.created_at}')"
 
+# Registration form
 class RegistrationForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired(), Length(min=2, max=20)])
     email = StringField('Email', validators=[DataRequired(), Email()])
@@ -57,12 +59,14 @@ class RegistrationForm(FlaskForm):
         if user:
             raise ValidationError('Email is already in use. Please choose a different one.')
 
+# Login form
 class LoginForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired()])
     remember = BooleanField('Remember Me')
     submit = SubmitField('Login')
 
+# Routes
 @app.route('/')
 @app.route('/index')
 def index():
@@ -75,16 +79,12 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
-        if user:
-            print(f"User found: {user.username}")
-            if bcrypt.check_password_hash(user.password, form.password.data):
-                login_user(user, remember=form.remember.data)
-                flash('Login successful', 'success')
-                return redirect(url_for('index'))
-            else:
-                flash('Login unsuccessful. Please check username and password', 'danger')
+        if user and bcrypt.check_password_hash(user.password, form.password.data):
+            login_user(user, remember=form.remember.data)
+            flash('Login successful', 'success')
+            return redirect(url_for('index'))
         else:
-            flash('User not found', 'danger')
+            flash('Login unsuccessful. Please check username and password', 'danger')
     return render_template('login.html', form=form)
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -99,8 +99,6 @@ def register():
         db.session.commit()
         flash('Your account has been created! You are now able to log in', 'success')
         return redirect(url_for('login'))
-    else:
-        print(form.errors)
     return render_template('register.html', form=form)
 
 @app.route('/analytics')
@@ -122,6 +120,7 @@ def logout():
     logout_user()
     return redirect(url_for('index'))
 
+# Error handling
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('404.html'), 404
@@ -130,6 +129,7 @@ def page_not_found(e):
 def internal_server_error(e):
     return render_template('500.html'), 500
 
+# Database initialization
 with app.app_context():
     db.create_all()
 
