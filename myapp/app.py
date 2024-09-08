@@ -12,8 +12,8 @@ app = Flask(__name__)
 
 # Configuration
 class Config:
-    SECRET_KEY = os.environ.get('SECRET_KEY') or 'your_secret_key'  # Ensure this key is securely set
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///site.db'  # Check the database path
+    SECRET_KEY = os.environ.get('SECRET_KEY')
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///site.db'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 app.config.from_object(Config)
@@ -45,7 +45,7 @@ class User(db.Model, UserMixin):
 class RegistrationForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired(), Length(min=2, max=20)])
     email = StringField('Email', validators=[DataRequired(), Email()])
-    password = PasswordField('Password', validators=[DataRequired()])
+    password = PasswordField('Password', validators=[DataRequired(), Length(min=8)])
     confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')])
     submit = SubmitField('Register')
 
@@ -85,6 +85,8 @@ def login():
             return redirect(url_for('index'))
         else:
             flash('Login unsuccessful. Please check username and password', 'danger')
+    elif request.method == 'POST':
+        flash('Please fill out the form.', 'danger')
     return render_template('login.html', form=form)
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -99,16 +101,20 @@ def register():
         db.session.commit()
         flash('Your account has been created! You are now able to log in', 'success')
         return redirect(url_for('login'))
+    elif request.method == 'POST':
+        flash('Please fill out the form.', 'danger')
     return render_template('register.html', form=form)
 
 @app.route('/analytics')
 @login_required
 def analytics():
+    # Add analytics functionality here
     return render_template('analytics.html')
 
 @app.route('/settings')
 @login_required
 def settings():
+    # Add settings functionality here
     return render_template('settings.html')
 
 @app.route('/error')
@@ -128,6 +134,14 @@ def page_not_found(e):
 @app.errorhandler(500)
 def internal_server_error(e):
     return render_template('500.html'), 500
+
+@app.errorhandler(403)
+def forbidden(e):
+    return render_template('403.html'), 403
+
+@app.errorhandler(408)
+def request_timeout(e):
+    return render_template('408.html'), 408
 
 # Database initialization
 with app.app_context():
