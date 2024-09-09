@@ -5,6 +5,7 @@
 {% block content %}
     <section>
         <h1>Dashboard</h1>
-        <p>Welcome back, {{ current_user.username }}! This is your Dashboard</p>
+        <h2 class="user">Welcome, <span>{{ current_user.username}}!</span></h2>
+        <p>This is your Dashboard</p>
     </section>
 {% endblock %}

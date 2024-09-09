@@ -82,7 +82,7 @@ def login():
         if user and bcrypt.check_password_hash(user.password, form.password.data):
             login_user(user, remember=form.remember.data)
             flash('Login successful', 'success')
-            return redirect(url_for('index'))
+            return redirect(url_for('dashboard'))
         else:
             flash('Login unsuccessful. Please check username and password', 'danger')
     return render_template('login.html', form=form)
