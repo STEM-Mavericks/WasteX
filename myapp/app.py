@@ -106,10 +106,10 @@ def register():
 def analytics():
     return render_template('analytics.html')
 
-@app.route('/settings')
+@app.route('/dashboard')
 @login_required
-def settings():
-    return render_template('settings.html')
+def dashboard():
+    return render_template('dashboard.html')
 
 @app.route('/logout')
 def logout():
