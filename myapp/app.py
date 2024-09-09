@@ -12,7 +12,7 @@ app = Flask(__name__)
 
 # Configuration
 class Config:
-    SECRET_KEY = os.environ.get('SECRET_KEY')
+    SECRET_KEY = os.environ.get('SECRET_KEY', 'default_secret_key')  # Use a default key for local development
     SQLALCHEMY_DATABASE_URI = 'sqlite:///site.db'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
@@ -85,8 +85,6 @@ def login():
             return redirect(url_for('index'))
         else:
             flash('Login unsuccessful. Please check username and password', 'danger')
-    elif request.method == 'POST':
-        flash('Please fill out the form.', 'danger')
     return render_template('login.html', form=form)
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -101,25 +99,17 @@ def register():
         db.session.commit()
         flash('Your account has been created! You are now able to log in', 'success')
         return redirect(url_for('login'))
-    elif request.method == 'POST':
-        flash('Please fill out the form.', 'danger')
     return render_template('register.html', form=form)
 
 @app.route('/analytics')
 @login_required
 def analytics():
-    # Add analytics functionality here
     return render_template('analytics.html')
 
 @app.route('/settings')
 @login_required
 def settings():
-    # Add settings functionality here
     return render_template('settings.html')
-
-@app.route('/error')
-def error():
-    return render_template('error.html')
 
 @app.route('/logout')
 def logout():
@@ -145,7 +135,10 @@ def request_timeout(e):
 
 # Database initialization
 with app.app_context():
-    db.create_all()
+    try:
+        db.create_all()
+    except Exception as e:
+        app.logger.error(f"Error initializing the database: {e}")
 
 if __name__ == '__main__':
     app.run(debug=True)
