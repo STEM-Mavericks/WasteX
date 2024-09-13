@@ -153,3 +153,17 @@ def register():
     return render_template('register.html', form=form)
     
 @app.route('/confirm_email/<token>')
+def confirm_email(token):
+    user = User.verify_confirmation_token(token)
+    if user is None:
+        flash('Invalid or expired token', 'danger')
+        return redirect(url_for('index'))
+    user.confirmed = True
+    db.session.commit()
+    flash('Your email has been confirmed!', 'success')
+    return redirect(url_for('login'))
+
+@app.route('/reset-password', methods=['GET','POST'])
+def reset_request():
+    if current_user.is_authenticated:
+        return redirect(url_for('dashboard'))
