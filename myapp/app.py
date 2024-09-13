@@ -167,3 +167,9 @@ def confirm_email(token):
 def reset_request():
     if current_user.is_authenticated:
         return redirect(url_for('dashboard'))
+    form = RequestResetForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(email=form.email.data).first()
+        if user:
+            token = user.get_reset_token()
+            send_reset_token =
