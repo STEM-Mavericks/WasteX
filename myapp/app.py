@@ -7,10 +7,14 @@ from wtforms import BooleanField, StringField, PasswordField, SubmitField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from itsdangerous import URLSafeTimedSerializer as Serializer
 from flask_mail import Message, Mail
+from dotenv import load_dotenv
 import os
 from datetime import datetime
 
+load_dotenv()
+
 app = Flask(__name__)
+
 
 # Config.py merged in this app.py
 class Config:
