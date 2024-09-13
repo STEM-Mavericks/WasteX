@@ -131,4 +131,9 @@ def login():
             return redirect(url_for('dashboard'))
         else:
             flash('Invalid username or password', 'danger')
-        re
+        return render_template('login.html', form=form)
+    
+@app.route('/register', methods=['GET','POST'])
+def register():
+    if current_user.is_authenticated:
+        return redirect(url_for('dashboard'))
