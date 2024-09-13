@@ -124,4 +124,11 @@ def login():
         return redirect(url_for('index'))
     form = LoginForm()
     if form.validate_on_submit():
-        
+        user = User.query.filter_by(username=form.username.data).first()
+        if user and bcrypt.check_password(user.password, form.password.data):
+            login_user(user, remember=form.remember.data)
+            flash('Login Successful', 'success')
+            return redirect(url_for('dashboard'))
+        else:
+            flash('Invalid username or password', 'danger')
+        re
