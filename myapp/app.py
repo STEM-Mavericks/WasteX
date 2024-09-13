@@ -117,3 +117,11 @@ class ResetPasswordForm(FlaskForm):
 @app.route('/')
 def home():
     return render_template('index.html')
+
+@app.route('/login')
+def login():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    form = LoginForm()
+    if form.validate_on_submit():
+        
