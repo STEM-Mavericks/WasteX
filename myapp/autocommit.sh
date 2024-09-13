@@ -5,3 +5,4 @@ while true; do
   git push
   sleep 300
 done
+# Use this when starting to write any code
