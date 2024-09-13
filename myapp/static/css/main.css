@@ -1,242 +1,98 @@
-/* General styles */
+/* styles.css */
+
+/* Reset some default styling */
+body, h1, p, form, input, button {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 body {
     font-family: Arial, sans-serif;
     line-height: 1.6;
-    margin: 0;
-    padding: 0;
+    background-color: #f4f4f4;
+    color: #333;
 }
 
 header {
     background: #333;
     color: #fff;
     padding: 10px 0;
-    text-align: center;
 }
 
-header .logo {
-    font-size: 1.5rem;
+header nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+}
+
+header nav ul li {
+    margin: 0 15px;
+}
+
+header nav ul li a {
     color: #fff;
     text-decoration: none;
 }
 
-header .logo span {
-    color: #07afe2;
+header nav ul li a:hover {
+    text-decoration: underline;
 }
 
-.navbar a {
-    color: #fff;
-    padding: 10px;
-    text-decoration: none;
-}
-
-.navbar a:hover {
-    color: rgba(249, 244, 244, 0.784); 
-}
-
-footer {
-    background: #333;
-    color: #fff;
-    padding: 10px 0;
-    text-align: center;
-}
-
-.container {
-    width: 80%;
-    margin: 0 auto;
+main {
+    max-width: 800px;
+    margin: 20px auto;
     padding: 20px;
-}
-
-.home-section, .details-section, .contact-section {
-    margin-bottom: 40px;
-}
-
-h1, h2, h3, h4 {
-    margin: 0;
-    padding: 0;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 h1 {
-    font-size: 2rem;
+    margin-bottom: 20px;
+    font-size: 24px;
 }
 
-h2 {
-    font-size: 1.5rem;
-}
-
-h2.user span {
-   color:#ffa600;
-}
-
-h3 {
-    font-size: 1.25rem;
-}
-
-h4 {
-    font-size: 1rem;
-}
-
-form {
-    background: #f4f4f4;
-    padding: 20px;
-    border-radius: 5px;
-}
-
-.form-group {
+form div {
     margin-bottom: 15px;
 }
 
-.form-label {
+form label {
     display: block;
     margin-bottom: 5px;
 }
 
-.form-control {
+form input[type="text"],
+form input[type="email"],
+form input[type="password"] {
     width: 100%;
     padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-}
-
-.btn {
-    background: #333;
-    color: #fff;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    text-align: center;
-}
-
-.btn:hover {
-    background: #555;
-}
-
-.contact-info {
-    text-decoration: none;
-}
-
-.form-footer .message {
-    color: #d9534f; 
-  }
-  
-  .form-footer .success {
-    color: #5bc0de; 
-  }
-  
-  .flash-messages {
-    margin-bottom: 20px;
-  }
-  
-  .alert {
-    padding: 15px;
-    border-radius: 5px;
-    margin-bottom: 10px;
-    font-size: 1rem;
-  }
-  
-  .alert-success {
-    background-color: #d4edda;
-    color: #155724;
-    border: 1px solid #c3e6cb;
-  }
-  
-  .alert-danger {
-    background-color: #f8d7da;
-    color: #721c24;
-    border: 1px solid #f5c6cb;
-  }
-  
-  .alert-info {
-    background-color: #d1ecf1;
-    color: #0c5460;
-    border: 1px solid #bee5eb;
-  }
-  
-  .alert-warning {
-    background-color: #fff3cd;
-    color: #856404;
-    border: 1px solid #ffeeba;
-  }
-
-  /* General Settings Page Styles */
-.settings {
-    padding: 60px 20px;
-}
-
-.settings-container {
-    max-width: 800px;
-    margin: 0 auto;
-}
-
-fieldset {
-    border: none;
-    margin-bottom: 20px;
-    padding: 20px;
-    background: #f9f9f9;
-    border-radius: 8px;
-}
-
-legend {
-    font-size: 24px;
-    margin-bottom: 10px;
-    color: #333;
-}
-
-label {
-    display: block;
-    margin-bottom: 10px;
-    font-weight: bold;
-}
-
-input[type="text"], input[type="email"], input[type="password"], select {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 20px;
     border: 1px solid #ccc;
     border-radius: 4px;
 }
 
-input[type="checkbox"] {
-    margin-right: 10px;
-}
-
-button.btn {
-    background-color: #4CAF50;
+form input[type="submit"] {
+    background: #333;
     color: #fff;
-    padding: 10px 20px;
+    padding: 10px 15px;
     border: none;
     border-radius: 4px;
     cursor: pointer;
 }
 
-button.btn-danger {
-    background-color: #f44336;
+form input[type="submit"]:hover {
+    background: #555;
 }
 
-button.btn:hover {
-    background-color: #45a049;
+.error {
+    color: red;
+    font-size: 0.875em;
+    margin-top: 5px;
 }
 
-button.btn-danger:hover {
-    background-color: #e53935;
-}
-
-/* Responsive Styles */
-@media (max-width: 768px) {
-    .settings-container {
-        padding: 20px;
-    }
-
-    fieldset {
-        padding: 10px;
-    }
-
-    input[type="text"], input[type="email"], input[type="password"], select {
-        padding: 8px;
-    }
-
-    button.btn, button.btn-danger {
-        width: 100%;
-        padding: 12px;
-    }
+footer {
+    text-align: center;
+    padding: 10px 0;
+    background: #333;
+    color: #fff;
 }

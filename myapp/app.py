@@ -15,7 +15,6 @@ load_dotenv()
 
 app = Flask(__name__)
 
-
 # Config.py merged in this app.py
 class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY')
