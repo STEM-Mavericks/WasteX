@@ -10,15 +10,13 @@ from datetime import datetime
 
 app = Flask(__name__)
 
-# Configuration
 class Config:
-    SECRET_KEY = os.environ.get('SECRET_KEY', 'default_secret_key')  # Use a default key for local development
+    SECRET_KEY = os.environ.get('SECRET_KEY', 'default_secret_key')  
     SQLALCHEMY_DATABASE_URI = 'sqlite:///site.db'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 app.config.from_object(Config)
 
-# Initialize extensions
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
 login_manager = LoginManager(app)
@@ -29,7 +27,6 @@ login_manager.login_message_category = 'info'
 def load_user(user_id):
     return User.query.get(int(user_id))
 
-# User model
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(20), unique=True, nullable=False)
@@ -41,7 +38,6 @@ class User(db.Model, UserMixin):
     def __repr__(self):
         return f"User('{self.username}', '{self.email}', '{self.created_at}')"
 
-# Registration form
 class RegistrationForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired(), Length(min=2, max=20)])
     email = StringField('Email', validators=[DataRequired(), Email()])
@@ -133,12 +129,8 @@ def forbidden(e):
 def request_timeout(e):
     return render_template('408.html'), 408
 
-# Database initialization
 with app.app_context():
     try:
         db.create_all()
     except Exception as e:
         app.logger.error(f"Error initializing the database: {e}")
-
-if __name__ == '__main__':
-    app.run(debug=True)
