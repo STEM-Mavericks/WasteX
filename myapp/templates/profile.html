@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}Profile - Automated Waste Segregation{% endblock %}
+
+{% block content %}
+<h1>Profile</h1>
+<form method="POST" action="{{ url_for('profile') }}">
+    {{ form.hidden_tag() }}
+    <div>
+        {{ form.username.label }}
+        {{ form.username() }}
+        {% for error in form.username.errors %}
+            <div class="error">{{ error }}</div>
+        {% endfor %}
+    </div>
+    <div>
+        {{ form.email.label }}
+        {{ form.email() }}
+        {% for error in form.email.errors %}
+            <div class="error">{{ error }}</div>
+        {% endfor %}
+    </div>
+    <div>
+        {{ form.password.label }}
+        {{ form.password() }}
+        {% for error in form.password.errors %}
+            <div class="error">{{ error }}</div>
+        {% endfor %}
+    </div>
+    <div>
+        {{ form.submit() }}
+    </div>
+</form>
+{% endblock %}
