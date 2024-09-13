@@ -10,8 +10,8 @@ class UserBehavior(TaskSet):
         self.client.get("/analytics")
 
     @task(1)
-    def view_settings(self):
-        self.client.get("/settings")
+    def view_dashboard(self):
+        self.client.get("/dashboard")
 
 class WebsiteUser(HttpUser):
     tasks = [UserBehavior]
