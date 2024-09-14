@@ -14,8 +14,10 @@ def add_confirmed_column():
     with app.app_context():
         # Execute raw SQL to add the 'confirmed' column
         with db.engine.connect() as connection:
+            # Use text() to ensure the SQL command is properly executed
+            from sqlalchemy import text
             connection.execute(
-                'ALTER TABLE user ADD COLUMN confirmed BOOLEAN NOT NULL DEFAULT 0;'
+                text('ALTER TABLE user ADD COLUMN confirmed BOOLEAN NOT NULL DEFAULT 0;')
             )
         print("Column 'confirmed' added to 'user' table.")
 
