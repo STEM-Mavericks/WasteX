@@ -19,7 +19,7 @@ app = Flask(__name__)
 # Configurations
 class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY')
-    SQLALCHEMY_DATABASE_URI = app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///site.db'
     MAIL_SERVER = 'smtp-mail.outlook.com'
     MAIL_PORT = 587
     MAIL_USE_TLS = True
@@ -165,14 +165,14 @@ def index():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for('index'))
+        return redirect(url_for('dashboard'))  # Redirect to dashboard if logged in
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
         if user and bcrypt.check_password_hash(user.password, form.password.data):
             login_user(user, remember=form.remember.data)
             flash('Login Successful', 'success')
-            return redirect(url_for('index'))
+            return redirect(url_for('dashboard'))  # Redirect to dashboard if login is successful
         else:
             flash('Invalid username or password', 'danger')
     return render_template('login.html', form=form)
@@ -180,7 +180,7 @@ def login():
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if current_user.is_authenticated:
-        return redirect(url_for('index'))
+        return redirect(url_for('dashboard'))  # Redirect to dashboard if already logged in
     form = RegistrationForm()
     if form.validate_on_submit():
         hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
@@ -190,7 +190,7 @@ def register():
         user.generate_otp()  # Generate OTP
         send_otp_email(user)  # Send OTP email
         flash('Your account has been created! Please check your email for OTP to confirm your account.', 'success')
-        return redirect(url_for('verify_otp', user_id=user.id))
+        return redirect(url_for('verify_otp', user_id=user.id))  # Redirect to OTP verification
     return render_template('register.html', form=form)
 
 @app.route('/verify-otp/<int:user_id>', methods=['GET', 'POST'])
@@ -199,8 +199,9 @@ def verify_otp(user_id):
     if request.method == 'POST':
         otp = request.form.get('otp')
         if user.verify_otp(otp):
+            login_user(user)  # Log in the user automatically after successful OTP verification
             flash('Your email has been confirmed!', 'success')
-            return redirect(url_for('login'))
+            return redirect(url_for('dashboard'))  # Redirect to dashboard after OTP verification
         else:
             flash('Invalid or expired OTP', 'danger')
     return render_template('verify_otp.html', user=user)
@@ -211,54 +212,20 @@ def confirm_email(token):
     if user:
         user.confirmed = True
         db.session.commit()
-        flash('Your email has been confirmed!', 'success')
-        return redirect(url_for('login'))
+        flash('Your account has been confirmed!', 'success')
     else:
-        flash('Invalid or expired token', 'danger')
-        return redirect(url_for('index'))
-
-@app.route('/reset-password', methods=['GET', 'POST'])
-def reset_request():
-    if current_user.is_authenticated:
-        return redirect(url_for('index'))
-    form = RequestResetForm()
-    if form.validate_on_submit():
-        user = User.query.filter_by(email=form.email.data).first()
-        if user:
-            send_reset_email(user)
-            flash('An email has been sent with instructions to reset your password.', 'info')
-        else:
-            flash('No account found with that email address.', 'danger')
-    return render_template('reset_request.html', form=form)
-
-@app.route('/reset-password/<token>', methods=['GET', 'POST'])
-def reset_token(token):
-    user = User.verify_reset_token(token)
-    if not user:
-        flash('Invalid or expired token', 'danger')
-        return redirect(url_for('reset_request'))
-    form = ResetPasswordForm()
-    if form.validate_on_submit():
-        hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
-        user.password = hashed_password
-        db.session.commit()
-        flash('Your password has been updated!', 'success')
-        return redirect(url_for('login'))
-    return render_template('reset_token.html', form=form)
-
-@app.route('/analytics')
-def analytics():
-    return render_template('analytics.html')
-
-@app.route('/dashboard')
-def dashboard():
-    return render_template('dashboard.html')
+        flash('The confirmation link is invalid or has expired.', 'danger')
+    return redirect(url_for('login'))
 
 @app.route('/logout')
 def logout():
     logout_user()
-    flash('You have been logged out!', 'success')
     return redirect(url_for('index'))
+
+@app.route('/dashboard')
+@login_required
+def dashboard():
+    return render_template('dashboard.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
