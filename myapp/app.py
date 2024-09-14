@@ -251,8 +251,8 @@ def analytics():
     return render_template('analytics.html')
 
 @app.route('/dashboard')
-def analytics():
-    return render_template('analytics.html')
+def dashboard():
+    return render_template('dashboard.html')
 
 @app.route('/logout')
 def logout():
