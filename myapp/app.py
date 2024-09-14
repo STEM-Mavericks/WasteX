@@ -213,6 +213,10 @@ def dashboard():
     return render_template('dashboard.html')
 
 @app.route('/logout')
+def logout():
+    logout_user
+    flash('Your are successfully logged off!')
+    return render_template('index.html')
 
 with app.app_context():
     db.create_all()
