@@ -1,6 +1,0 @@
-gunicorn==22.0.0
-# Removed PyTorch dependencies
-Flask==3.0.3
-Flask-Bcrypt==1.0.0
-Flask-Login==0.6.2
-sqlite3  # This is a part of Python's standard library and does not need to be listed separately.
