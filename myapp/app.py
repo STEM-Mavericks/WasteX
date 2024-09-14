@@ -203,5 +203,9 @@ def reset_token(token):
         return redirect(url_for('login'))
     return render_template('reset_token.html', form=form)
 
+with app.app_context():
+    db.create_all()
+    print("Database created and tables initialized.")
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
