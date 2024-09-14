@@ -44,7 +44,9 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(20), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(60), nullable=False)
-    confirmed = db.Column(db.Boolean, nullable=False, default=False)  # Ensure this line is present
+    confirmed = db.Column(db.Boolean, nullable=False, default=False)
+    otp = db.Column(db.String(6), nullable=True)  # New field for OTP
+    otp_expiry = db.Column(db.DateTime, nullable=True)  # New field for OTP expiry
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow)
 
@@ -69,6 +71,23 @@ class User(db.Model, UserMixin):
         except:
             return None
         return User.query.get(user_id)
+
+def generate_otp(self):
+        """Generate a 6-digit OTP and set its expiry time."""
+        import random
+        self.otp = str(random.randint(100000, 999999))
+        self.otp_expiry = datetime.utcnow() + timedelta(minutes=10)
+        db.session.commit()
+    
+def verify_otp(self, otp):
+        """Verify the OTP entered by the user."""
+        if self.otp == otp and datetime.utcnow() < self.otp_expiry:
+            self.otp = None  # Clear OTP after verification
+            self.otp_expiry = None
+            self.confirmed = True
+            db.session.commit()
+            return True
+        return False
 
 @login_manager.user_loader
 def load_user(user_id):
