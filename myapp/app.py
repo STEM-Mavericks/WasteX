@@ -19,7 +19,7 @@ app = Flask(__name__)
 # Configurations
 class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY')
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL')
+    SQLALCHEMY_DATABASE_URI = app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
     MAIL_SERVER = 'smtp-mail.outlook.com'
     MAIL_PORT = 587
     MAIL_USE_TLS = True
@@ -76,7 +76,7 @@ class User(db.Model, UserMixin):
         """Generate a 6-digit OTP and set its expiry time."""
         import random
         self.otp = str(random.randint(100000, 999999))
-        self.otp_expiry = datetime.utcnow() + timedelta(minutes=10)
+        self.otp_expiry = datetime.utcnow() + timedelta(minutes=30)
         db.session.commit()
     
     def verify_otp(self, otp):
@@ -153,7 +153,7 @@ def send_otp_email(user):
     msg.body = f'''To confirm your account, use the following OTP:
 {otp}
 
-This OTP will expire in 10 minutes. If you did not make this request, simply ignore this email.
+This OTP will expire in 30 minutes. If you did not make this request, simply ignore this email.
 '''
     mail.send(msg)
 
