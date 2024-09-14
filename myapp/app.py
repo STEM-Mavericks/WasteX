@@ -52,9 +52,9 @@ class User(db.Model, UserMixin):
         return serializer.dumps({'user_id': self.id}, salt='password-reset-salt')
     
     @staticmethod
-    def verify_reset_token(token):
+    def verify_reset_token(token, expires_sec=3600):
         try:
-            user_id = serializer.loads(token, salt='password-reset-salt', max_age=3600)['user_id']
+            user_id = serializer.loads(token, salt='password-reset-salt', max_age=expires_sec)['user_id']
         except:
             return None
         return User.query.get(user_id)
@@ -63,9 +63,9 @@ class User(db.Model, UserMixin):
         return serializer.dumps({'user_id': self.id}, salt='confirm-email-salt')
     
     @staticmethod
-    def verify_confirmation_token(token):
+    def verify_confirmation_token(token, expires_sec=3600):
         try:
-            user_id = serializer.loads(token, salt='confirm-email-salt', max_age=3600)['user_id']
+            user_id = serializer.loads(token, salt='confirm-email-salt', max_age=expires_sec)['user_id']
         except:
             return None
         return User.query.get(user_id)
@@ -108,9 +108,9 @@ class ResetPasswordForm(FlaskForm):
     submit = SubmitField('Reset Password')
 
 # Email functions
-def send_confirmation_email(to_email):
-    token = serializer.dumps(to_email, salt='email-confirm')
-    msg = Message('Confirm Your Email', sender=app.config['MAIL_DEFAULT_SENDER'], recipients=[to_email])
+def send_confirmation_email(user):
+    token = user.get_confirmation_token()
+    msg = Message('Confirm Your Email', sender=app.config['MAIL_DEFAULT_SENDER'], recipients=[user.email])
     msg.body = f'''To confirm your account, visit the following link:
 {url_for('confirm_email', token=token, _external=True)}
 
@@ -118,9 +118,9 @@ If you did not make this request, simply ignore this email.
 '''
     mail.send(msg)
 
-def send_reset_email(to_email):
-    token = serializer.dumps(to_email, salt='password-reset-salt')
-    msg = Message('Password Reset Request', sender=app.config['MAIL_DEFAULT_SENDER'], recipients=[to_email])
+def send_reset_email(user):
+    token = user.get_reset_token()
+    msg = Message('Password Reset Request', sender=app.config['MAIL_DEFAULT_SENDER'], recipients=[user.email])
     msg.body = f'''To reset your password, visit the following link:
 {url_for('reset_token', token=token, _external=True)}
 
@@ -158,16 +158,14 @@ def register():
         user = User(username=form.username.data, email=form.email.data, password=hashed_password)
         db.session.add(user)
         db.session.commit()
-
-        send_confirmation_email(user.email)
+        send_confirmation_email(user)
         flash('Your account has been created! Please check your email to confirm your account.', 'success')
         return redirect(url_for('login'))
     return render_template('register.html', form=form)
 
 @app.route('/confirm_email/<token>')
 def confirm_email(token):
-    email = serializer.loads(token, salt='email-confirm')
-    user = User.query.filter_by(email=email).first()
+    user = User.verify_confirmation_token(token)
     if user:
         user.confirmed = True
         db.session.commit()
@@ -185,7 +183,7 @@ def reset_request():
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
         if user:
-            send_reset_email(user.email)
+            send_reset_email(user)
         flash('An email has been sent with instructions to reset your password', 'info')
         return redirect(url_for('login'))
     return render_template('reset_request.html', form=form)
