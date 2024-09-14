@@ -246,6 +246,14 @@ def reset_token(token):
         return redirect(url_for('login'))
     return render_template('reset_token.html', form=form)
 
+@app.route('/analytics')
+def analytics():
+    return render_template('analytics.html')
+
+@app.route('/dashboard')
+def analytics():
+    return render_template('analytics.html')
+
 @app.route('/logout')
 def logout():
     logout_user()
