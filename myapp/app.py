@@ -177,10 +177,24 @@ def register():
         user = User(username=form.username.data, email=form.email.data, password=hashed_password)
         db.session.add(user)
         db.session.commit()
-        send_confirmation_email(user)
-        flash('Your account has been created! Please check your email to confirm your account.', 'success')
-        return redirect(url_for('login'))
+        user.generate_otp()  # Generate OTP
+        send_otp_email(user)  # Send OTP email
+        flash('Your account has been created! Please check your email for OTP to confirm your account.', 'success')
+        return redirect(url_for('verify_otp', user_id=user.id))
     return render_template('register.html', form=form)
+
+@app.route('/verify-otp/<int:user_id>', methods=['GET', 'POST'])
+def verify_otp(user_id):
+    user = User.query.get_or_404(user_id)
+    if request.method == 'POST':
+        otp = request.form.get('otp')
+        if user.verify_otp(otp):
+            flash('Your email has been confirmed!', 'success')
+            return redirect(url_for('login'))
+        else:
+            flash('Invalid or expired OTP', 'danger')
+    return render_template('verify_otp.html', user=user)
+
 
 @app.route('/confirm_email/<token>')
 def confirm_email(token):
@@ -221,6 +235,16 @@ def reset_token(token):
         flash('Your password has been updated! You can now log in.', 'success')
         return redirect(url_for('login'))
     return render_template('reset_token.html', form=form)
+
+def send_otp_email(user):
+    otp = user.otp
+    msg = Message('Confirm Your Email with OTP', sender=app.config['MAIL_DEFAULT_SENDER'], recipients=[user.email])
+    msg.body = f'''To confirm your account, use the following OTP:
+{otp}
+
+This OTP will expire in 10 minutes. If you did not make this request, simply ignore this email.
+'''
+    mail.send(msg)
 
 @app.route('/analytics')
 def analytics():
