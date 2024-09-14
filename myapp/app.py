@@ -9,7 +9,7 @@ from itsdangerous import URLSafeTimedSerializer as Serializer
 from flask_mail import Mail, Message
 from dotenv import load_dotenv
 import os
-from datetime import datetime
+from datetime import datetime, timedelta  # Added timedelta
 
 # Load environment variables
 load_dotenv()
@@ -19,7 +19,7 @@ app = Flask(__name__)
 # Configurations
 class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY')
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///site.db'
+    SQLALCHEMY_DATABASE_URI = os.getenviron.get('DATABASE_URL')
     MAIL_SERVER = 'smtp-mail.outlook.com'
     MAIL_PORT = 587
     MAIL_USE_TLS = True
@@ -72,14 +72,14 @@ class User(db.Model, UserMixin):
             return None
         return User.query.get(user_id)
 
-def generate_otp(self):
+    def generate_otp(self):
         """Generate a 6-digit OTP and set its expiry time."""
         import random
         self.otp = str(random.randint(100000, 999999))
         self.otp_expiry = datetime.utcnow() + timedelta(minutes=10)
         db.session.commit()
     
-def verify_otp(self, otp):
+    def verify_otp(self, otp):
         """Verify the OTP entered by the user."""
         if self.otp == otp and datetime.utcnow() < self.otp_expiry:
             self.otp = None  # Clear OTP after verification
@@ -147,6 +147,16 @@ If you did not make this request, simply ignore this email.
 '''
     mail.send(msg)
 
+def send_otp_email(user):
+    otp = user.otp
+    msg = Message('Confirm Your Email with OTP', sender=app.config['MAIL_DEFAULT_SENDER'], recipients=[user.email])
+    msg.body = f'''To confirm your account, use the following OTP:
+{otp}
+
+This OTP will expire in 10 minutes. If you did not make this request, simply ignore this email.
+'''
+    mail.send(msg)
+
 # Routes
 @app.route('/')
 def index():
@@ -195,7 +205,6 @@ def verify_otp(user_id):
             flash('Invalid or expired OTP', 'danger')
     return render_template('verify_otp.html', user=user)
 
-
 @app.route('/confirm_email/<token>')
 def confirm_email(token):
     user = User.verify_confirmation_token(token)
@@ -217,8 +226,9 @@ def reset_request():
         user = User.query.filter_by(email=form.email.data).first()
         if user:
             send_reset_email(user)
-        flash('An email has been sent with instructions to reset your password', 'info')
-        return redirect(url_for('login'))
+            flash('An email has been sent with instructions to reset your password.', 'info')
+        else:
+            flash('No account found with that email address.', 'danger')
     return render_template('reset_request.html', form=form)
 
 @app.route('/reset-password/<token>', methods=['GET', 'POST'])
@@ -226,44 +236,21 @@ def reset_token(token):
     user = User.verify_reset_token(token)
     if not user:
         flash('Invalid or expired token', 'danger')
-        return redirect(url_for('index'))
+        return redirect(url_for('reset_request'))
     form = ResetPasswordForm()
     if form.validate_on_submit():
         hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
         user.password = hashed_password
         db.session.commit()
-        flash('Your password has been updated! You can now log in.', 'success')
+        flash('Your password has been updated!', 'success')
         return redirect(url_for('login'))
     return render_template('reset_token.html', form=form)
 
-def send_otp_email(user):
-    otp = user.otp
-    msg = Message('Confirm Your Email with OTP', sender=app.config['MAIL_DEFAULT_SENDER'], recipients=[user.email])
-    msg.body = f'''To confirm your account, use the following OTP:
-{otp}
-
-This OTP will expire in 10 minutes. If you did not make this request, simply ignore this email.
-'''
-    mail.send(msg)
-
-@app.route('/analytics')
-def analytics():
-    # Your logic here
-    return render_template('analytics.html')
-
-@app.route('/dashboard')
-def dashboard():
-    return render_template('dashboard.html')
-
 @app.route('/logout')
 def logout():
-    logout_user
-    flash('Your are successfully logged off!')
-    return render_template('index.html')
-
-with app.app_context():
-    db.create_all()
-    print("Database created and tables initialized.")
+    logout_user()
+    flash('You have been logged out!', 'success')
+    return redirect(url_for('index'))
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(debug=True)
