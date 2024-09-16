@@ -1,6 +1,6 @@
 Flask==2.2.5
 Flask-SQLAlchemy==2.5.1
-Flask-Bcrypt==0.7.1
+flask-bcrypt==1.0.1
 Flask-Login==0.6.0
 Flask-WTF==1.0.0
 WTForms==3.0.1
