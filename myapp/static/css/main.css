@@ -96,3 +96,12 @@ footer {
     background: #333;
     color: #fff;
 }
+
+a:link{
+    text-decoration: white;
+    color:white;
+}
+
+a:link:hover{
+    text-decoration: underline;
+}
