@@ -11,7 +11,7 @@ The **Automated Waste Segregation System** is designed to enhance waste manageme
 - **Bin Capacity Monitoring**: Uses an ultrasonic sensor to continuously monitor the bin's capacity, alerting users when the bin is nearing full capacity to prevent overflow.
 - **Real-Time Data and Alerts**: Features a web application that displays real-time data on waste segregation, bin capacity, and waste weight, along with alerts and notifications for timely waste disposal.
 - **Detailed Waste Analytics**: Generates reports on waste production, including daily, weekly, and monthly metrics, to help users track and manage their waste generation patterns.
-- **Durable and Adaptable Design**: Engineered to function effectively in various environmental conditions, from humid to arid environments, making it suitable for residential areas, public spaces, and industrial sites.
+- **Durable and Adaptable Design**: Suitable for humid to arid environments, making it suitable for residential areas, public spaces, and industrial sites.
 
 ## Components
 
@@ -38,29 +38,11 @@ The **Automated Waste Segregation System** is designed to enhance waste manageme
 
 - **Improved Waste Sorting**: Automates the process of sorting dry and wet waste, reducing human error and increasing recycling efficiency.
 - **Enhanced Waste Management**: Provides real-time monitoring and alerts to prevent bin overflow and maintain cleanliness.
-- **Data-Driven Insights**: Offers detailed analytics on waste generation patterns to help users manage waste more effectively.
 - **Supports Sustainability**: Promotes recycling and reduces landfill waste, contributing to a cleaner environment.
 
-## Installation and Setup
-
-1. **Hardware Setup**:
-   - Connect the moisture, load, and ultrasonic sensors to the Arduino board.
-   - Set up the motorized actuator and conveyor mechanism within the bin.
-   - Ensure all components are securely installed and connected.
-
-2. **Software Setup**:
-   - Install the necessary libraries for the sensors and actuators on the Arduino.
-   - Upload the Arduino code to the board to enable sensor readings and actuator control.
-   - Deploy the web application on a server to access real-time data and analytics.
-
-3. **Web Application**:
-   - Navigate to the web app URL provided by your deployment setup.
-   - Log in to view real-time data, receive alerts, and access waste analytics.
 
 ## Future Improvements
 
-- **Integration with IoT Platforms**: Enhance data collection and analysis by integrating with IoT platforms.
-- **Machine Learning for Waste Prediction**: Use machine learning algorithms to predict waste generation patterns and optimize waste management strategies.
 - **Mobile App**: Develop a mobile app version of the web application for easier access and notifications.
 
 ## Contributing
@@ -77,5 +59,5 @@ This project has a notice under the Apache License - see the [NOTICE](NOTICE) fi
 
 ## Contact
 
-For more information or questions, please contact us at [STEM Mavericks](mailto:stemavericks.team@hotmail.com).
+For more information or questions, please contact us at [STEM Mavericks](mailto:stemavericks.team@outlook.com).
 
