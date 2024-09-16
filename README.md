@@ -2,9 +2,9 @@
 
 ## Overview
 
-The **Automated Waste Segregation System** is designed to enhance waste management efficiency by automating the segregation of dry and wet waste. The system uses a combination of sensors and actuators to detect moisture levels, measure waste weight, and monitor bin capacity, ensuring precise and effective waste segregation. It also provides real-time data visualization, alerts, and analytics via a user-friendly web application to promote responsible waste management and sustainability.
+The **Automated Waste Segregation System** is designed to enhance waste management efficiency by automating the segregation of dry and wet waste. This app is made user-friendly, so user can use our model efficently and bring impact on environment to keep clean surroundings.
 
-## Key Features
+## Features
 
 - **Automated Waste Segregation**: Utilizes a moisture sensor to differentiate between dry and wet waste, directing each type to the appropriate compartment.
 - **Weight Measurement**: Employs a load sensor to measure the weight of the waste, helping monitor waste generation and avoid overloading the bin.
