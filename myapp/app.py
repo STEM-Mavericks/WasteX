@@ -19,6 +19,7 @@ app = Flask(__name__)
 # Configurations
 class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY')
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     SQLALCHEMY_DATABASE_URI = 'sqlite:///site.db'
     MAIL_SERVER = 'smtp-mail.outlook.com'
     MAIL_PORT = 587
