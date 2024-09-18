@@ -9,7 +9,7 @@ from itsdangerous import URLSafeTimedSerializer as Serializer
 from flask_mail import Mail, Message
 from dotenv import load_dotenv
 import os
-from datetime import datetime, timedelta  # Added timedelta
+from datetime import datetime, timedelta
 
 # Load environment variables
 load_dotenv()
@@ -19,8 +19,8 @@ app = Flask(__name__)
 # Configurations
 class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY')
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     SQLALCHEMY_DATABASE_URI = 'sqlite:///site.db'
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
     MAIL_SERVER = 'smtp-mail.outlook.com'
     MAIL_PORT = 587
     MAIL_USE_TLS = True
@@ -46,8 +46,8 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(60), nullable=False)
     confirmed = db.Column(db.Boolean, nullable=False, default=False)
-    otp = db.Column(db.String(6), nullable=True)  # New field for OTP
-    otp_expiry = db.Column(db.DateTime, nullable=True)  # New field for OTP expiry
+    otp = db.Column(db.String(6), nullable=True)
+    otp_expiry = db.Column(db.DateTime, nullable=True)
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow)
 
@@ -74,16 +74,14 @@ class User(db.Model, UserMixin):
         return User.query.get(user_id)
 
     def generate_otp(self):
-        """Generate a 6-digit OTP and set its expiry time."""
         import random
         self.otp = str(random.randint(100000, 999999))
         self.otp_expiry = datetime.utcnow() + timedelta(minutes=30)
         db.session.commit()
     
     def verify_otp(self, otp):
-        """Verify the OTP entered by the user."""
         if self.otp == otp and datetime.utcnow() < self.otp_expiry:
-            self.otp = None  # Clear OTP after verification
+            self.otp = None
             self.otp_expiry = None
             self.confirmed = True
             db.session.commit()
@@ -166,14 +164,14 @@ def index():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for('dashboard'))  # Redirect to dashboard if logged in
+        return redirect(url_for('dashboard'))
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
         if user and bcrypt.check_password_hash(user.password, form.password.data):
             login_user(user, remember=form.remember.data)
             flash('Login Successful', 'success')
-            return redirect(url_for('dashboard'))  # Redirect to dashboard if login is successful
+            return redirect(url_for('dashboard'))
         else:
             flash('Invalid username or password', 'danger')
     return render_template('login.html', form=form)
@@ -181,17 +179,17 @@ def login():
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if current_user.is_authenticated:
-        return redirect(url_for('dashboard'))  # Redirect to dashboard if already logged in
+        return redirect(url_for('dashboard'))
     form = RegistrationForm()
     if form.validate_on_submit():
         hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
         user = User(username=form.username.data, email=form.email.data, password=hashed_password)
         db.session.add(user)
         db.session.commit()
-        user.generate_otp()  # Generate OTP
-        send_otp_email(user)  # Send OTP email
+        user.generate_otp()
+        send_otp_email(user)
         flash('Your account has been created! Please check your email for OTP to confirm your account.', 'success')
-        return redirect(url_for('verify_otp', user_id=user.id))  # Redirect to OTP verification
+        return redirect(url_for('verify_otp', user_id=user.id))
     return render_template('register.html', form=form)
 
 @app.route('/verify-otp/<int:user_id>', methods=['GET', 'POST'])
@@ -200,9 +198,9 @@ def verify_otp(user_id):
     if request.method == 'POST':
         otp = request.form.get('otp')
         if user.verify_otp(otp):
-            login_user(user)  # Log in the user automatically after successful OTP verification
+            login_user(user)
             flash('Your email has been confirmed!', 'success')
-            return redirect(url_for('dashboard'))  # Redirect to dashboard after OTP verification
+            return redirect(url_for('dashboard'))
         else:
             flash('Invalid or expired OTP', 'danger')
     return render_template('verify_otp.html', user=user)
@@ -227,6 +225,16 @@ def logout():
 @login_required
 def dashboard():
     return render_template('dashboard.html')
+
+# Error Handlers
+@app.errorhandler(404)
+def not_found_error(error):
+    return render_template('404.html'), 404
+
+@app.errorhandler(500)
+def internal_error(error):
+    db.session.rollback()  # Rollback in case of database errors
+    return render_template('500.html'), 500
 
 if __name__ == '__main__':
     app.run(debug=True)
