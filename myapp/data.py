@@ -15,15 +15,7 @@ db = SQLAlchemy(app)
 def add_columns():
     with app.app_context():
         try:
-            with db.engine.connect() as connection:
-                # Add 'otp' column
-                connection.execute(
-                    text('ALTER TABLE user ADD COLUMN otp VARCHAR(6);')
-                )
-                # Add 'otp_expiry' column
-                connection.execute(
-                    text('ALTER TABLE user ADD COLUMN otp_expiry DATETIME;')
-                )
+            with db.engine.connect() as connec
             print("Columns 'otp' and 'otp_expiry' added to 'user' table.")
         except OperationalError as e:
             # Handle the case where the column already exists or other issues
