@@ -226,6 +226,11 @@ def logout():
 def dashboard():
     return render_template('dashboard.html')
 
+@app.route("/analytics")
+def analytics():
+    return render_template("analytics.html")
+
+
 # Error Handlers
 @app.errorhandler(404)
 def not_found_error(error):
