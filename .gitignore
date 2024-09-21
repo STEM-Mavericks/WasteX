@@ -18,6 +18,7 @@ venv.bak/
 instance/
 
 # Flask settings file
+.env
 *.env
 
 # Database files
@@ -31,6 +32,7 @@ instance/
 
 # Static files
 staticfiles/
+static
 *.pyc
 
 # Temporary files
