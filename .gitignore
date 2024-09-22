@@ -6,47 +6,96 @@ __pycache__/
 # C extensions
 *.so
 
-# Virtual environment
+# Distribution / packaging
+.Python
 env/
 venv/
 ENV/
-VENV/
 env.bak/
 venv.bak/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
 
-# Flask/Instance folder
-instance/
+# PyInstaller
+#  Usually these files are written by a python script from a template
+#  before PyInstaller builds the exe, so as to inject date/other infos into it.
+*.manifest
+*.spec
 
-# Flask settings file
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+.pytest_cache/
+pytest_cache/
+cover/
+*.mo
+*.pot
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Environments
 .env
-*.env
+.env.*
+.venv
+.venv.*
 
-# Database files
-*.sqlite3
-*.db
-
-# Logs
-*.log
-*.out
-*.err
-
-# Static files
-staticfiles/
-static
-*.pyc
-
-# Temporary files
-temp/
-tmp/
-
-# IDE / Editor settings
+# VSCode specific files
 .vscode/
-.idea/
-*.swp
-*.swo
+.history/
 
-# MacOS files
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pyre type checker
+.pyre/
+
+# profiling
+.prof
+
+# Visual Studio Specific
+.vs/
+*.dbmdl
+*.pdb
+*.opendb
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Visual Studio Code
+.vscode/
+
+# Backup files
+*.bak
+
+# macOS files
 .DS_Store
-
-# Linux directory file
-.directory
