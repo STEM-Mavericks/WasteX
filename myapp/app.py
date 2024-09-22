@@ -37,6 +37,8 @@ login_manager = LoginManager(app)
 login_manager.login_view = 'login'
 login_manager.login_message_category = 'info'
 mail = Mail(app)
+
+# Initialize URLSafeTimedSerializer
 serializer = Serializer(app.config['SECRET_KEY'])
 
 # User model and token methods
